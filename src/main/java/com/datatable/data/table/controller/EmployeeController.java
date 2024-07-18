@@ -1,5 +1,6 @@
 package com.datatable.data.table.controller;
 
+import com.datatable.data.table.dto.BulkEmployeeRequest;
 import com.datatable.data.table.model.Employee;
 import com.datatable.data.table.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,18 @@ public class EmployeeController {
     }
 
     @PostMapping("/bulk")
-    public List<Employee> saveAllEmployees(@RequestBody List<Employee> employees) {
-        return employeeService.saveAllEmployees(employees);
+    public ResponseEntity<Void> handleBulkOperations(@RequestBody BulkEmployeeRequest request) {
+        if (request.getCreate() != null) {
+            employeeService.saveAllEmployees(request.getCreate());
+        }
+        if (request.getUpdate() != null) {
+            for (Employee employee : request.getUpdate()) {
+                employeeService.updateEmployee(employee.getId(), employee);
+            }
+        }
+        if (request.getDelete() != null) {
+            employeeService.deleteEmployees(request.getDelete());
+        }
+        return ResponseEntity.ok().build();
     }
 }

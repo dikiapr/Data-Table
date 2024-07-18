@@ -41,4 +41,8 @@ public class EmployeeService {
     public List<Employee> saveAllEmployees(List<Employee> employees) {
         return employeeRepository.saveAll(employees);
     }
+
+    public void deleteEmployees(List<Long> ids) {
+        employeeRepository.deleteAllById(ids);
+    }
 }
